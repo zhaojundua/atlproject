@@ -1,9 +1,89 @@
 {% extends "base.html" %}
 
-{% block title %}ATL - Tour Customers{% endblock %}
+{% block title %}Tour Customer List{% endblock %}
 
 {% block content %}
+<style>
+    .page-title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
 
-<!-- Display a list of the customers on the tour -->
+    .customer-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    .customer-table th, .customer-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .customer-table th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .customer-table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .no-data {
+        text-align: center;
+        font-size: 18px;
+        color: #888;
+    }
+
+    .back-button {
+        display: block;
+        width: 200px;
+        margin: 20px auto;
+        padding: 10px;
+        text-align: center;
+        background-color: #007BFF;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .back-button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<h1 class="page-title">Customer List for Tour Group</h1>
+
+{% if customerlist %}
+    <table class="customer-table">
+        <thead>
+            <tr>
+                <th>Customer ID</th>
+                <th>First Name</th>
+                <th>Family Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in customerlist %}
+                <tr>
+                    <td>{{ customer.customerid }}</td>
+                    <td>{{ customer.firstname | escape }}</td>
+                    <td>{{ customer.familyname | escape }}</td>
+                    <td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td>
+                    <td><a href="tel:{{ customer.phone }}">{{ customer.phone }}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="no-data">No customers found for this tour group.</p>
+{% endif %}
+
+<a href="javascript:history.back()" class="back-button">← Go Back</a>
 
 {% endblock %}

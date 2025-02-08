@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Customer List{% endblock %}
+
+{% block content %}
+<h1>Customer List</h1>
+
+<form method="POST" action="{{ url_for('search_customers') }}" class="mb-3">
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search by name or email" name="keyword">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Customer ID</th>
+            <th>First Name</th>
+            <th>Family Name</th>
+            <th>Date of Birth</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for customer in customers %}
+        <tr>
+            <td>{{ customer.customerid }}</td>
+            <td>{{ customer.firstname }}</td>
+            <td>{{ customer.familyname }}</td>
+            <td>{{ customer.dob }}</td>
+            <td>{{ customer.email }}</td>
+            <td>{{ customer.phone }}</td>
+            <td>
+                <a href="{{ url_for('edit_customer', customerid=customer.customerid) }}" class="btn btn-warning btn-sm">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('add_customer') }}" class="btn btn-success">Add New Customer</a>
+
+<a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">Return to Home</a>
+{% endblock %}

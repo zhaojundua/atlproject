@@ -1,51 +1,108 @@
 {% extends "base.html" %}
 
-{% block title %}ATL - Tours{% endblock %}
-
 {% block content %}
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
 
+    label {
+        font-weight: bold;
+    }
 
-{% if tourid is not defined %}
-<form action="tours" method="POST" class="needs-validation" novalidate>
-    <div>
-<label for="tourlist">Select the tour to display</label>
-<select class="form-select" name="tourid" id="tourid" required>
-    <option disabled selected value="">Choose a tour</option>
-    {% for tour in tours %}
-        <option value="{{tour['tourid']}}">{{tour['tourname']}}</option>
-    {% endfor %}
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-</select>
-<div class="invalid-feedback">
-    Please choose a tour.
-  </div>
-</div>
-<button class="btn btn-primary" type="submit">Select Tour Group</button>
-</form>
+    .btn-primary, .btn-secondary {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+    }
 
-{% else %}
+    .btn-primary {
+        background-color: #007BFF;
+        color: white;
+    }
 
-<form action="tours/list" method="POST" class="needs-validation" novalidate>
-    <input type="hidden" name="tourid" value="{{tourid}}"/>
-    <div>
-        <label for="tourgroup">Select the tour group to display</label>
-        <select class="form-select" name="tourgroupid" id="tourgroupid" required>
-            <option disabled selected value="">Choose a tour group</option>
-            {% for tour in tourgroups %}
-                {{tour}}
-                <option name="tourgroupid" value="{{tour['tourgroupid']}}">{{tour['startdate']}}</option>
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: #a71d2a;
+    }
+
+    .section-title {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<h2 class="section-title">Tours</h2>
+
+<form method="POST" id="tour-form">
+    <div class="form-group">
+        <label for="tourid">Select Tour:</label>
+        <select name="tourid" id="tourid">
+            <option value="">-- Select a Tour --</option>
+            {% for tour in tours %}
+                <option value="{{ tour.tourid }}" {% if tour.tourid == tourid %}selected="selected"{% endif %}>
+                    {{ tour.tourname }}
+                </option>
             {% endfor %}
-        
         </select>
-        <div class="invalid-feedback">
-            Please choose a tour group.
-          </div>
-        </div>
-        <button class="btn btn-primary" type="submit">Show Customers on Tour</button>
+    </div>
 </form>
 
-
+{% if tourid %}
+   
+    <div id="group-selection">
+        <h3 class="section-title">Tour Groups for "{{ tourid }}"</h3>
+        <form method="POST" action="{{ url_for('tourlist') }}">
+            <input type="hidden" name="tourid" value="{{ tourid }}">
+            <div class="form-group">
+                <label for="tourgroupid">Select Tour Group:</label>
+                <select name="tourgroupid" id="tourgroupid">
+                    {% for group in tourgroups %}
+                        <option value="{{ group.tourgroupid }}" {% if group.tourgroupid == tourgroupid %}selected="selected"{% endif %}>
+                            {{ group.startdate }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn-primary">View Customers</button>
+        </form>
+        
+        <button onclick="goBackToTour()" class="btn-secondary">← Back to Tour Selection</button>
+    </div>
 {% endif %}
 
+<script>
+    document.getElementById("tourid").addEventListener("change", function() {
+        document.getElementById("tour-form").submit();  
+    });
+
+    function goBackToTour() {
+        window.location.href = window.location.pathname; 
+    }
+</script>
+<a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">Return to Home</a>
 
 {% endblock %}

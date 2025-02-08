@@ -4,11 +4,24 @@
 
 {% block content %}
 
-<p>Home </p>
+<div class="container mt-5 text-center">
+    <div class="card shadow-sm p-4">
+        <h1 class="display-4 text-primary">Welcome to ATL</h1>
+        <p class="lead text-muted">
+            Your trusted partner in travel planning. Discover exciting tours and create unforgettable memories with ATL.
+        </p>
 
-
-<p>Add some brief text and an image here </p>
-
-
+        <a href="{{ url_for('tours') }}" class="btn btn-primary btn-lg mt-3">
+            View Tours
+        </a>
+        <a href="{{ url_for('customers') }}" class="btn btn-primary btn-lg mt-3">
+            View Customer
+        </a>
+        <a href="{{ url_for('makebooking') }}" class="btn btn-primary btn-lg mt-3">
+            Add Booking
+        </a>
+        
+    </div>
+</div>
 
 {% endblock %}

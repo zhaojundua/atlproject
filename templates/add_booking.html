@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Add Booking{% endblock %}
+
+{% block content %}
+<h2>Add Booking</h2>
+<form method="POST">
+    <div class="form-group">
+        <label for="tourgroupid">Select Tour Group:</label>
+        <select name="tourgroupid" id="tourgroupid" class="form-control">
+            {% for group in tourgroups %}
+                <option value="{{ group.tourgroupid }}">{{ group.startdate }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="customerid">Select Customer:</label>
+        <select name="customerid" id="customerid" class="form-control">
+            {% for customer in customers %}
+                <option value="{{ customer.customerid }}">{{ customer.firstname }} {{ customer.familyname }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="booking_date">Booking Date:</label>
+        <input type="date" id="booking_date" name="booking_date" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Booking</button>
+    <a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">Return to Home</a>
+</form>
+{% endblock %}
